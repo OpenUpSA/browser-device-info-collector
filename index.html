@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Really Simple Browser &amp; Device Information Collector</title>
+    <meta
+      name="description"
+      content="Makes collecting your user's device and browser information really simple and easy."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css"
+    />
+    <script type="text/javascript">
+      function collect() {
+        var info = {};
+
+        info.collectedAt = new Date();
+        info.collectedVia = document.location.toString();
+
+        info.navigator = {};
+        try {
+          info.navigator.hardwareConcurrency = navigator.hardwareConcurrency;
+          info.navigator.deviceMemory = navigator.deviceMemory;
+          info.navigator.platform = navigator.platform;
+          info.navigator.userAgent = navigator.userAgent;
+          info.navigator.appVersion = navigator.appVersion;
+          info.navigator.vendor = navigator.vendor;
+        } catch {}
+
+        info.navigator.connection = {};
+        try {
+          info.navigator.connection.downlink = navigator.connection.downlink;
+          info.navigator.connection.rtt = navigator.connection.rtt;
+          info.navigator.connection.effectiveType =
+            navigator.connection.effectiveType;
+          info.navigator.connection.saveData = navigator.connection.saveData;
+        } catch {}
+
+        info.window = {};
+        try {
+          info.window.indexedDB = typeof window.indexedDB;
+          info.window.crypto = typeof window.crypto;
+          info.window.devicePixelRatio = window.devicePixelRatio;
+          info.window.localStorage = typeof window.localStorage;
+          info.window.sessionStorage = typeof window.sessionStorage;
+        } catch {}
+
+        info.screen = {};
+        try {
+          info.screen.availHeight = window.screen.availHeight;
+          info.screen.availWidth = window.screen.availWidth;
+          info.screen.height = window.screen.height;
+          info.screen.width = window.screen.width;
+          info.screen.pixelDepth = window.screen.pixelDepth;
+          info.screen.colorDepth = window.screen.colorDepth;
+        } catch {}
+
+        return info;
+      }
+
+      function updateDisplay() {
+        const info = collect();
+        document.getElementById("displayInfo").innerHTML = JSON.stringify(
+          info,
+          null,
+          " "
+        );
+      }
+
+      function copy() {
+        var copyText = document.querySelector("#displayInfo");
+        copyText.select();
+        document.execCommand("copy");
+      }
+
+      window.addEventListener("load", updateDisplay);
+    </script>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Browser &amp; Device Information Collector</h1>
+        <p class="content">
+          Below is some information about the web browser and the device you are
+          using. This information helps us build better tools for you. It does
+          not contain personal information. Once you click submit you will be
+          sent to a Google Form where you can confirm the submission of your
+          data.
+        </p>
+        <form
+          action="https://docs.google.com/forms/d/e/1FAIpQLSePr6ryYtyYVw9FGAYRC_1UYJa-rFB0s5Tue2SbzvyuojAEAw/viewform?usp=pp_url"
+          method="get"
+        >
+          <div class="field">
+            <div class="control is-small">
+              <textarea
+                name="entry.220421785"
+                class="textarea is-small"
+                id="displayInfo"
+                rows="10"
+              >
+Loading...</textarea
+              >
+            </div>
+          </div>
+          <button id="copy" class="button is-fullwidth is-primary">
+            Submit
+          </button>
+        </form>
+      </div>
+    </section>
+    <footer class="footer has-background-white">
+      <p class="content is-size-7 has-text-centered">Created by <a href="https://openup.org.za">OpenUp</a></p>
+    </footer>
+  </body>
+</html>
